@@ -8,6 +8,7 @@ print("\nHello! Welcome to an idea I had concerning time dilation!\n\n"
       "The original hypothesis was a question of whether or not there was some kind of 'sweet spot' with speed of\n"
       "travel relative to light speed. I believe I got the idea when I was fooling around with a time dilation\n"
       "calculator on the web. Anyway, here are some calculations I made in the order that I made them in. Enjoy.")
+
 while True:
     print("\nWhich function do you want to run?\n"
           "1. Distance Traveled Chart\n"

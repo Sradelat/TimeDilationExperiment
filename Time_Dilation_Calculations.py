@@ -1,20 +1,7 @@
 import matplotlib.pyplot as plt
 import math
-# TODO consider moving calculations away from strings for readability? idk
-# PLAN A:
-# set mission parameters and find best speed
-
-# PLAN B:
-# travel distance difference calculator
-
-# PLAN 1:
-# Find best speed(s) given a RELATIVE TIME and DISTANCE
-# Calculate distance traveled in steps of 0.1 and find the greatest give a relative time
-# 5lys away in 20 years relative time
-
 
 lightyearmps = 186282  # miles per second at light speed
-seconds_in_year = 31536000  # in a normal year
 miles_per_year = 5287130236800.001  # at light speed
 
 
@@ -35,7 +22,7 @@ def distance_traveled_chart():
 
 # TIME DILATION CHART
 def time_dilation_chart():
-    print("Unsatisfied with the previous chart, I looked up the time dilation equation and figured out how to code\n"
+    print("\nUnsatisfied with the previous chart, I looked up the time dilation equation and figured out how to code\n"
           "it in. The equation solves for RELATIVE time. If you don't know what that is, basically, if a crew is \n"
           "traveling near lightspeed for a year through space, then relative time, or the time that passed on earth,\n"
           "would be 2.3 years. This chart is what I expected from my first program and shows exactly what I described.")
@@ -49,14 +36,16 @@ def time_dilation_chart():
     return plt.show()
 
 
-# SWEET SPOT EXPERIMENT - HYPOTHESIS TRUE.. TODO NEEDS TO READ EASIER FOR CLARITY
+# SWEET SPOT EXPERIMENT - HYPOTHESIS TRUE
 def sweet_spot_experiment():
     print("\nHere is where I realized that my hypothesis was true. Simply based on the fact that traveling at 50%\n"
           "lightspeed for 2 years and 90% for 1 year both produce the same relative time of ~2.3 years.\n")
     # The idea is that traveling at 50% for two years and 90% for one year both produce 2.3 years relative time, however
     # 50% for two years produces more distance traveled
-    print("Relative time traveling for two years @ 50% light speed: ", str(2 / math.sqrt(1 - 0.5 ** 2 / 1 ** 2)))
-    print("Relative time traveling for one year @ 90% light speed:  ", str(1 / math.sqrt(1 - 0.9 ** 2 / 1 ** 2)))
+    print(f"Relative time traveling for two years @ 50% light speed: ",
+          str(round(2 / math.sqrt(1 - 0.5 ** 2 / 1 ** 2), 2)))
+    print("Relative time traveling for one year @ 90% light speed:  ",
+          str(round(1 / math.sqrt(1 - 0.9 ** 2 / 1 ** 2), 2)))
     input("\nPress enter to continue.\n")
     print("\nAs you can see its not exact but its pretty close.\n"
           "Therefore, I can compare the distance covered by these two instances:\n")
@@ -73,7 +62,7 @@ def sweet_spot_experiment():
 
 
 # TIME DILATION CALCULATOR W/ DISTANCE
-def time_dilation_calculator():  # TODO define rules, break loop
+def time_dilation_calculator():
     print("\nAfter messing with the formula manually in the previous module, I wanted to find out what exactly is the\n"
           "optimal speed to travel. Also, I realized it would be useful to have travel distance calculated for me.\n"
           "This is what I came up with. It helped me confirm what I would later turn into a graph. It could also\n"
@@ -90,7 +79,7 @@ def time_dilation_calculator():  # TODO define rules, break loop
             continue  # try again
         if velocity < 1:  # formula will only work with value less than 1
             relative_time = time / math.sqrt(1 - velocity ** 2 / 1 ** 2)  # relative (Earth) time calculation
-            print(f"\nRelative time: {relative_time} years")
+            print(f"\nRelative time: {round(relative_time, 1)} years")
             print(f"Distance traveled: {(time * miles_per_year) * velocity} miles")  # simple distance calculation
             while True:
                 answer = input("\nEnter 'y' to try again. Otherwise, enter 'n' to get back to the menu.\n")
@@ -116,31 +105,39 @@ def velocity_calculator():
           "\nThis calculator has two rules:\n"
           "1. You must enter a NUMBER greater than 0.\n"
           "2. Crew travel time can not be larger than desired relative time.\n")
+
     while True:
+        # Code format is subjective and I like spaces between things. Ironically I filled this one with a comment.
         time = input("Enter desired crew travel time in years: ")
         relative_time = input("Enter desired relative time in years: ")
+
         try:
             time = float(time)  # test if user entered correctly
             relative_time = float(relative_time)
         except ValueError:  # if not throw error
             print("ERROR. Please enter numbers only.")
             continue  # try again
+
         if time > relative_time:  # cause math doesn't work this way
             input("ERROR. Crew time can not be larger than desired relative time. Press enter to try again.")
             continue  # try again
+
         if time == 0:  # cannot divide by 0
             input("ERROR. Time must be greater than zero. Press enter to try again")
             continue  # try again
+
         t = math.sqrt(1 - ((1 / (relative_time / time)) ** 2))  # square rt fn - calculates for SPEED
-        print(f"Speed relative to light year: {t}")
-        while True:
+        print(f"Speed relative to light year: {round(t, 2)}")
+
+        while True:  # Try again clause
             answer = input("\nEnter 'y' to try again. Otherwise, enter 'n' to get back to the menu.\n")
             if answer == "y":
                 break  # that was fun! try again
             elif answer == "n":
-                return  # that was boring. go back to menu
+                return  # that was boring. Go back to menu
             else:
                 print("Invalid input.")
+
         break
     return
 
@@ -160,44 +157,49 @@ def reach_calculator():
           "For example: 10 years relative time entered. The calculator solves for 9 years crew time, then 8 years\n"
           "crew time, then 7, and so on. This records a speed and a distance every iteration. The largest distance\n"
           "covered is then pulled from all of the calculations. Finally, all of the calculations are graphed.\n")
+
     while True:
         d_storage = []  # master list of distances and speeds for each crew interval
-        relative_time = input("Enter desired relative time (Earth time) in years: ")
-        crew_interval = int(relative_time)  # copies input to start a countdown interval  TODO can go after value check?
 
-        while crew_interval > 0:  # calculate for each year up to however many years were entered
-            crew_interval -= 1  # TODO this block for value check - separate check from countdown?
+        while True:  # calculate for each year up to however many years were entered
+            relative_time = input("Enter desired relative time (Earth time) in years: ")
             try:
-                crew_interval = float(crew_interval)
                 relative_time = float(relative_time)
+                break
             except ValueError:
                 print("ERROR. Please enter numbers only.")
-                break
-            if crew_interval == 0:
+                continue
+
+        crew_interval = relative_time  # a copy for the countdown - pycharm doesn't like this to be in the block above
+
+        while crew_interval > 0:  # calculate for each year up to however many years were entered
+            crew_interval -= 1
+            if crew_interval == 0:  # can't divide by 0
                 break
             speed = math.sqrt(1 - ((1 / (relative_time / crew_interval)) ** 2))  # square root fn
             d = (speed * miles_per_year) * crew_interval  # distance calculation
-            d_storage.append((d, speed))
+            d_storage.append((d, speed))  # adding distance and speed to distance list as tuple to keep correlation
 
-        sorted_d = sorted(d_storage)
+        sorted_d = sorted(d_storage)  # see below comment
         largest = sorted_d[-1][0], sorted_d[-1][1]  # sorted list instead of iterating - saves memory and time I think
-        for entry in d_storage:  # pulls the largest distance in the list
-            if float(entry[0]) > float(largest[0]):
-                largest = entry
-        distances = []
-        speeds = []
-        for entry in d_storage:
-            distances.append(entry[0])
-            speeds.append(entry[1])
-        plt.plot(speeds, distances)
+
+        distances = []  # see below comment
+        speeds = []  # see above comment
+
+        for entry in d_storage:  # separates distances and speeds from their tuples in the list - for graphing
+            distances.append(entry[0])  # seems redundant to make a list and then separate it - see below comment
+            speeds.append(entry[1])  # can't think of a better way at the moment
+
+        plt.plot(speeds, distances)  # self-explanatory
         plt.title(f"affect of speed on Distance over {int(relative_time)} years relative time".title())
         plt.xlabel("Speed as a Percentage of a Lightyear".title())
         plt.ylabel("Distance in Miles".title())
-        # plt.yticks(ticks=distances)
-        print(f"\nLargest distance in miles: {largest[0]}\n"
-              f"Percentage of lightyear at which distance was achieved: {largest[1]}")
+        print(f"\nLargest distance in miles: {largest[0]}\n"  # not so redundant when you can make a correlation 
+              f"Percentage of lightyear at which distance was achieved: {round(largest[1], 3)}")
+
         plt.show()
-        while True:
+
+        while True:  # try again clause
             answer = input("\nEnter 'y' to try again. Otherwise, enter 'n' to see the conclusion.\n")
             if answer == "y":
                 break  # that was fun! try again
@@ -205,18 +207,16 @@ def reach_calculator():
                 print("\nCONCLUSION:\n"
                       "\nAccording to this calculator, ~70.71% lightspeed is the optimal speed for distance\n"
                       "given a relative time!")
-                quit()
+                input("\nPress enter to close.")
+                quit()  # Mission complete
             else:
                 print("Invalid input.")
-
-
-
 
 
 # EXPERIMENTAL REACH CALCULATIONS BASED ON 10 YEARS EARTH TIME -- CREW TIME/RELATIVE TIME
 # 9/10 20741459763194.54
 # 8/10 25378225136640.0
-# 7/10 26430363524944.41  <- ~5 times farther than 1/10
+# 7/10 26430363524944.41  <- ~5 times farther than 1/10!
 # 6/10 25378225136640.008
 # 5/10 22893945490928.18
 # 4/10 19382939615380.64
