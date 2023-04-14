@@ -1,8 +1,6 @@
 # Time Dilation Calculator (Complete)
 *Is there a sweet spot with travel velocity in relation to time dilation?*
 
-This project is the spawn of a fun idea I had while thinking about time dilation.
-
 ### What is this?
 
 This is an exploration and compilation of ideas relative to time dilation. I document my discoveries
